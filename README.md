@@ -119,13 +119,20 @@
 1. Return to the browser tab open to the Azure portal.
 2. Click the Resource groups tab from the left menu. Locate and click the partsunlimited group created earlier.
 
+   ![image](https://user-images.githubusercontent.com/62759668/197906267-9a494fd4-be73-4c26-8097-c9801e229797.png)
+
 3. Click your SQL database (something like pul-johndoe/partsunlimited). Make sure you click the database you created and not the server. Note that it may take a few minutes for the database and server to become available, so click the Refresh button every once in a while to check in.
+   
+   ![image](https://user-images.githubusercontent.com/62759668/197906398-984c2b78-351a-4f47-a872-ae8b7c4507a8.png)
 
 4. In the new blade, click Show database connection strings.
+
+   ![image](https://user-images.githubusercontent.com/62759668/197906990-21a04125-d096-47e3-b209-e23d4db8441a.png)
 
 5. This will provide you with a list of connection strings based on platform. Copy the ADO.NET string to your clipboard so you can configure your new web site to use it. Close this blade.
 
 6. Open a new instance of Notepad and paste the connection string into it. This will make it easier to edit and retrieve later on in case anything happens to the clipboard copy.
+
 7. Use the breadcrumb navigation to return to the partsunlimited resource group.
 
 8. Click the QA app service created earlier.
@@ -138,16 +145,29 @@
 
 12. Click Save to commit.
 
+    ![image](https://user-images.githubusercontent.com/62759668/197909122-1340c7f3-2a0a-4f37-8b5d-5ac256792e0b.png)
+
 13. Repeat the process above to add the same connection string to the production app service.
+
+    ![image](https://user-images.githubusercontent.com/62759668/197909289-818dc754-1fbe-4620-baac-b99256efcfcb.png)
+
 ### Task 4: Invoking a continuous delivery release to QA
 1. Return to the browser tab open to your Azure DevOps project.
-2. Now that the release pipeline is in place, it’s time to commit a change in order to invoke a build and release. You’ll need to make a few changes like this over the course of this lab, so it’s recommended that you use a separate tab for Code | Files to keep that part of the process separate.
+
+   https://aex.dev.azure.com/
+   https://dev.azure.com/
+   
+3. Now that the release pipeline is in place, it’s time to commit a change in order to invoke a build and release. You’ll need to make a few changes like this over the course of this lab, so it’s recommended that you use a separate tab for Code | Files to keep that part of the process separate.
+
+   ![image](https://user-images.githubusercontent.com/62759668/197911313-e74c3677-06bd-4206-88df-0e581b9729e7.png)
 
 3. Navigate to PartsUnlimited-aspnet45/src/PartsUnlimitedWebsite/Views/Shared/_Layout.cshtml. This is a file that defines the general layout of the site and is a good place to make a change that will be easily visible after deployment.
 
 4. Click Edit to edit the file inline.
 
 5. Locate the Parts Unlimited Logo and add the text “v2.0” after it. This will be an easy thing to check for after deployment.
+
+   ![image](https://user-images.githubusercontent.com/62759668/197911538-e374fb99-193c-4015-8443-7c3bee4b7f1e.png)
 
 6. Commit the changes back to the repo. This will kick off a build based on the preconfigured build pipeline.
 
