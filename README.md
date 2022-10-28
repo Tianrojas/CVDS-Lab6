@@ -2,8 +2,8 @@
 **Nombre:** Sebastian Rojas Bueno
 
 ## Prerequisites
-· An Azure account (free from https://azure.com/free).
-· Complete task 1 from the prerequisite instructions.
+* An Azure account (free from https://azure.com/free).
+* Complete task 1 from the [prerequisite](https://azuredevopslabs.com/labs/azuredevops/prereq/) instructions.
 
 ## Exercise 1: Embracing Continuous Delivery with Azure DevOps
 ### Task 1: Setting up Azure resources
@@ -177,30 +177,65 @@
 
 9. Follow the build until completion.
 
+   ![image](https://user-images.githubusercontent.com/62759668/198413845-f52a6103-b125-4f40-95d9-834b70aae066.png)
+
 10. Click the Releases tab to see the new release get going.
 
 11. Click the release. As with the build, it may be queued, in progress, or already completed when you get here.
 
 12. Follow the release until it succeeds.
 
+    ![image](https://user-images.githubusercontent.com/62759668/198413966-d660f29b-361c-442f-9273-059447d7d2d1.png)
+
 13. You can now close this tab if you prefer.
 
 14. In a new browser tab, navigate to the QA site. It will be the name of your app service plus “.azurewebsites.net”. It should show the v2.0 added earlier.
 
+    En este punto nos enfrentamos a este error
+    ![image](https://user-images.githubusercontent.com/62759668/198423531-ba4a1972-32c1-410a-a59c-bff0212a20ef.png) \
+    para solucionarlo en nos dirigimos a Git en azure, src, y encontramos el archivo `Web.config`, ya aca modificamos la siguiente linea de la siguiente manera sustituyendo su respectiva contrasena
+    ```
+    <add name="DefaultConnectionString" connectionString="Server=tcp:pul-sebas.database.windows.net,1433;Initial Catalog=partsunlimited;Persist Security Info=False;User ID=sysadmin;Password='Tian0369*';MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" providerName="System.Data.SqlClient" />
+    ```
+    ![image](https://user-images.githubusercontent.com/62759668/198424245-834106c7-5119-404c-a5fb-ff0f1cde9d72.png) \
+    Procediendo a eliminar la base de datos \
+    ![image](https://user-images.githubusercontent.com/62759668/198424926-1e94b345-4d6c-4cbd-8a24-17904de1861d.png) \
+    Para crearla de nuevo \
+    ![image](https://user-images.githubusercontent.com/62759668/198425273-2111b8e2-cabb-4956-8248-6e384f642066.png) \
+    Con sus debidas propiedades, aparece en rojo porque ya tengo mi base creada \
+    ![image](https://user-images.githubusercontent.com/62759668/198425928-ead73788-fbcd-4dad-bda2-e0e8f41795e7.png)
+    Una vez creada, corremos un nuevo release \
+    ![image](https://user-images.githubusercontent.com/62759668/198426521-fa305904-196a-4e53-b894-c0dbbe412730.png) \
+    Recargamos la pagina obteniendo el resultado esperado \
+    ![image](https://user-images.githubusercontent.com/62759668/198426790-4f5efc0d-25aa-4ac7-97d9-7ac14f02cde7.png)
 ### Task 5: Creating a gated release to the production stage
 1. Return to the Azure DevOps browser tab.
 2. Click on Pipelines>Pipelines and click on Edit (top-right) to modify the release definition.
 3. As release pipelines get more sophisticated, it becomes important to define gates to ensure quality throughout the release pipeline. Since the next stage we’re deploying to is production, we’ll need to be sure to include both automated quality gates as well as a manual approver gate. Return to the release pipeline browser tab and click Clone in the QA stage. Since the production stage is virtually the same, we can reuse almost all of the existing configuration.
 
+   ![image](https://user-images.githubusercontent.com/62759668/198437384-5cee2d0e-cd33-4fb4-b59b-6bda10b66edf.png)
+   ![image](https://user-images.githubusercontent.com/62759668/198438429-a14131d1-ca34-4607-8ccc-43c9c3d292de.png)
+   ![image](https://user-images.githubusercontent.com/62759668/198450975-a00cba92-5c98-4a8b-8d2c-7691df64addb.png)
+   ![image](https://user-images.githubusercontent.com/62759668/198451301-32b15fc2-33bb-4e97-999e-9b62c25bfe9d.png)
+
 4. The new stage is added after the current one, which is what we want. However, before we can consider the QA deployment successful, we’ll need to define a post-deployment condition. Click the Post-deployment conditions button on the QA stage.
 
 5. Enable the Gates option.
 
+   ![image](https://user-images.githubusercontent.com/62759668/198451554-7ef11194-9909-4415-a53e-893a0afec6af.png)
+
 6. There are several kinds of gates available that can automatically test virtually anything you need to make sure a deployment is in good shape. These could be the return values of Azure functions or REST APIs, queries to Azure for alerts, or work item queries in Azure DevOps. You can also configure how long the platform should delay before evaluating the gates for the first time. In this case, change that to 0 so it will test them immediately after deployment. Then click Add | Query Work Items.
 
-7. Select the Query for Shared Queries | Critical Bugs. We will make it our policy that the QA deployment cannot be considered a success until all critical bugs have been resolved.
+   ![image](https://user-images.githubusercontent.com/62759668/198452227-56d8a935-5763-418c-aad2-ab15d521616e.png)
+   ![image](https://user-images.githubusercontent.com/62759668/198457663-3a17bfb6-d6dd-4677-8e6a-fbd4f6c3181b.png)
+
+8. Select the Query for Shared Queries | Critical Bugs. We will make it our policy that the QA deployment cannot be considered a success until all critical bugs have been resolved.
+
+   ![image](https://user-images.githubusercontent.com/62759668/198452648-97aeec2a-bc7f-4fb9-87c4-bec3067c1394.png)
 
 8. Expand Evaluation options and update the Time between re-evaluation of gates to 5. If this gate fails, we want it to reevaluate the query every 5 minutes until it clears because engineers will need some time to confirm those critical bugs are fixed in the current version. However, if those bugs aren’t cleared and the release isn’t manually failed, this configuration will automatically fail the gate after 1 day.
+
+   ![image](https://user-images.githubusercontent.com/62759668/198453352-7f2433c8-b679-4a3d-a7e5-cde224f4c9bc.png)
 
 9. For the Query Gate to work, Project Build Service would require Read permission to queries. Go to Azure Boards > Queries > All > Shared Queries > “…” > Security.
 
@@ -214,7 +249,11 @@
 
 14. Enable the Pre-deployment approvals and add yourself as an Approver. The idea here is that you won’t be asked to approve the production deployment until after the QA deployment has succeeded. At that point, someone on this list will need to approve the deployment to production. Also clear the box for User requesting a release of deployment should not approve if it’s checked. For the purposes of this lab, you can approve releases you have requested.
 
+    ![image](https://user-images.githubusercontent.com/62759668/198461611-4213a0ed-885f-4c8e-96dd-b1d21f81361d.png)
+
 15. Click the Prod stage’s 1 job, 1 task.
+
+    ![image](https://user-images.githubusercontent.com/62759668/198462708-c36f20d1-fb55-4fa1-bd70-3510985f8edc.png)
 
 16. Update the App service name to reflect the “-prod” (instead of “-qa”).
 
@@ -224,15 +263,23 @@
 19. As before, follow the release until it is deploying to QA. Click to follow the release itself once available.
 20. Eventually there will be an issue with the QA deployment. While it deployed out successfully, one of the quality gates failed. This will need to be resolved for that stage to be approved. Click the View post-deployment gates button.
 
+    ![image](https://user-images.githubusercontent.com/62759668/198471998-078526d3-2246-4736-9320-f5160f179494.png)
+
 21. It looks like the Query Work Items gate is failing. This means that there is a critical bug that must be cleared.
 
 22. Open a new tab to Boards | Queries to locate the bug.
 
 23. Use the query list on the All tab to open the Shared Queries | Critical Bugs query.
 
+    ![image](https://user-images.githubusercontent.com/62759668/198472986-baf54918-789d-4c26-b59d-0e5eafbaa025.png)
+
 24. Open the one bug by clicking it.
 
+    ![image](https://user-images.githubusercontent.com/62759668/198473224-77a521b5-ebd7-4d18-a021-5bcb35199932.png)
+
 25. Ordinarily you’d check the site to confirm the bug was fixed, but we’ll skip ahead here and mark it Done. Click Save and close the tab.
+
+    ![image](https://user-images.githubusercontent.com/62759668/198473621-209eed14-8739-46cd-a12d-65713bcd6dc6.png)
 
 26. Return to the release pipeline tab. Depending on timing, it may take up to five minutes for Azure DevOps to check the query again. Once it does, the bugs will be cleared and the release will be approved. You can then click Approve to approve deployment to production.
 
@@ -255,7 +302,8 @@
 5. Enter a Name of “staging” and select the Configuration Source that matched your existing deployment (there should be only one). Click Add to create the slot.
 
 6. Return to the Azure DevOps tab with the Prod stage pipeline editor.
-7. Select the Deploy Azure App Service task.
+
+8. Select the Deploy Azure App Service task.
 
 8. Check Deploy to Slot… and set the Resource group and Slot to those created earlier.
 
