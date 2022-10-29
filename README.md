@@ -333,13 +333,19 @@
 
 13. Open a new tab to the staging slot. This will be the same as your production URL, but with “-staging” appended to the app service name within the domain. This should reflect the new v4.0.
 
+    ![image](https://user-images.githubusercontent.com/62759668/198801038-a29cfa6e-a75c-452b-86a0-d8a3e608081f.png)
+
 14. Return to the browser window open to the Azure portal. Click Swap in the deployment slots blade.
 
 15. The default options here are exactly what we want: to swap the production and staging slots. Click Swap. Note that if your apps rely on slot-level configuration settings (such as connection strings or app settings marked “slot”), then the worker processes will be restarted. If you’re working under those circumstances and would like to warm up the app before the swap completes, you can select the Swap with preview swap type.
 
+    ![image](https://user-images.githubusercontent.com/62759668/198802889-871e1c7f-f51f-44b0-b331-c32c0eabf9d1.png)
+
 16. Return to the prod browser window (not the staging slot) and refresh. It will now be the 4.0 version.
 
     ![image](https://user-images.githubusercontent.com/62759668/198799965-40845387-96f3-4f77-80f5-810af9da8bde.png)
+    ![image](https://user-images.githubusercontent.com/62759668/198803177-c541f2b6-55a5-4da3-bd43-58d9237cf826.png)
+
 
 ## Fuente
 https://azuredevopslabs.com/labs/azuredevops/continuousdeployment/
