@@ -285,11 +285,18 @@
 
 27. Confirm the deployment.
 
+    Aca hubo un problema para arreglarlo verificamos que la opcion de lectura esta permitida
+    ![image](https://user-images.githubusercontent.com/62759668/198755111-ac13c9d8-b4f9-4513-940c-f4bd84b3b90e.png) \
+    Permitiendo asi la continuacion del despliegue
+    ![image](https://user-images.githubusercontent.com/62759668/198755165-1d779a22-44b5-4f0f-bb00-fb9dfca13d3d.png)
+
 28. Click the In progress link to follow the release workflow.
 
 29. It may take a moment for the release to kick off and complete.
 
 30. Once the release has completed, open a new tab to the production app service URL. It should be the same as your QA URL, but with “-prod” instead of “-qa”. Note the v3.0.
+    
+    ![image](https://user-images.githubusercontent.com/62759668/198755177-c60dd2c8-a267-4718-85f8-c289d94a8b49.png)
 
 ### Task 6: Working with deployment slots
 1. Return to the browser window open to the Azure portal.
@@ -300,7 +307,9 @@
 4. Click Add Slot. Note that the production slot is considered a “default” slot and is not shown as a separate slot in the user experience.
 
 5. Enter a Name of “staging” and select the Configuration Source that matched your existing deployment (there should be only one). Click Add to create the slot.
-
+   ![image](https://user-images.githubusercontent.com/62759668/198773536-65352b91-63b7-4015-90e7-9d6b1871351f.png)
+   Tuve que tambien crearlo en pul-sebas-qa
+   ![image](https://user-images.githubusercontent.com/62759668/198784550-c24f6dff-a4ad-4944-bc6b-11c80d49c345.png)
 6. Return to the Azure DevOps tab with the Prod stage pipeline editor.
 
 8. Select the Deploy Azure App Service task.
@@ -310,8 +319,17 @@
 9. Save the release pipeline.
 
 10. Follow the workflow from earlier to commit a change to the codebase at “PartsUnlimited-aspnet45/src/PartsUnlimitedWebsite/Views/Shared/_Layout.cshtml” by updating the layout template from “3.0” to “4.0”.
+    ![image](https://user-images.githubusercontent.com/62759668/198777620-4224c5c6-23a5-4aa7-b4d6-0098e133843e.png)
 11. Follow the release pipeline through deployment and approve the release to production when requested.
+    
+    ![image](https://user-images.githubusercontent.com/62759668/198784875-19016970-3682-4e0f-8443-9112ce9dad18.png)
+    ![image](https://user-images.githubusercontent.com/62759668/198788014-47218846-a1b4-45ef-963a-c578b3842ef0.png)
+
 12. When the production deployment has completed, refresh that browser tab. Note that there shouldn’t be any change since the deployment was pushed to a different slot.
+    
+    Tuve de nuevo el siguiente error
+    ![image](https://user-images.githubusercontent.com/62759668/198793256-799e3a5f-c9b4-4bd5-a667-df633e0fa3ab.png)
+    Por lo que porcedi a elimiar de nuevo la base de datos -prod y le agregue de nuevo el staging
 
 13. Open a new tab to the staging slot. This will be the same as your production URL, but with “-staging” appended to the app service name within the domain. This should reflect the new v4.0.
 
@@ -320,6 +338,8 @@
 15. The default options here are exactly what we want: to swap the production and staging slots. Click Swap. Note that if your apps rely on slot-level configuration settings (such as connection strings or app settings marked “slot”), then the worker processes will be restarted. If you’re working under those circumstances and would like to warm up the app before the swap completes, you can select the Swap with preview swap type.
 
 16. Return to the prod browser window (not the staging slot) and refresh. It will now be the 4.0 version.
+
+    ![image](https://user-images.githubusercontent.com/62759668/198799965-40845387-96f3-4f77-80f5-810af9da8bde.png)
 
 ## Fuente
 https://azuredevopslabs.com/labs/azuredevops/continuousdeployment/
